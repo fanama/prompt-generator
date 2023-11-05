@@ -17,7 +17,7 @@
 <div
   class="bg-gray-900 text-white w-full md:w-2/6 p-8 h-full m-5 shadow-lg rounded-lg"
 >
-  <h1 class="text-3xl font-bold mb-6">Prompt Creator</h1>
+  <h1 class="text-3xl font-bold mb-6">Prompt Template Creator</h1>
 
   <div class="bg-gray-800 p-6 rounded-lg shadow-md mb-6">
     <h2 class="text-2xl font-semibold mb-3">Title</h2>
