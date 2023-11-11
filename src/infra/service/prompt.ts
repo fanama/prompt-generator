@@ -17,6 +17,9 @@ class PromptDatabase {
   deletePrompt(prompt: Prompt): Prompt[] {
     return this.localStorage.remove(prompt);
   }
+  deleteAllPrompt(): Prompt[] {
+    return this.localStorage.removeAll();
+  }
 }
 
 export const promptController = new PromptDatabase();

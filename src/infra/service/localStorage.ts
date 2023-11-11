@@ -23,13 +23,24 @@ export class LocalStorage<T> {
   }
 
   add(value: T): T[] {
-    this.values = [...this.values, value];
-    localStorage.setItem(this.key, JSON.stringify(this.values));
-    return this.values;
+    const values = [...this.values, value];
+    localStorage.setItem(this.key, JSON.stringify(values));
+    this.values = values;
+    alert(`${this.key} added`);
+
+    return values;
   }
   remove(value: T): T[] {
-    this.values = this.values.filter((v) => v != value);
-    localStorage.setItem(this.key, JSON.stringify(this.values));
-    return this.values;
+    const values = this.values.filter((v) => v != value);
+    localStorage.setItem(this.key, JSON.stringify(values));
+    this.values = values;
+    return values;
+  }
+
+  removeAll(): T[] {
+    const values: T[] = [];
+    localStorage.clear();
+    this.values = values;
+    return values;
   }
 }
