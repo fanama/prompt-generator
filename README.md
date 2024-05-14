@@ -1,6 +1,15 @@
-# Svelte + TS + Vite
+# Svelte + TS + Vite + ollama
 
 This template should help get you started developing with Svelte and TypeScript in Vite.
+
+## Please install Ollama
+
+https://ollama.ai/
+
+```
+curl https://ollama.ai/install.sh | sh
+ollama pull mistral
+```
 
 ## Recommended IDE Setup
 
@@ -42,6 +51,6 @@ If you have state that's important to retain within a component, consider creati
 ```ts
 // store.ts
 // An extremely simple external store
-import { writable } from 'svelte/store'
-export default writable(0)
+import { writable } from "svelte/store";
+export default writable(0);
 ```
