@@ -4,6 +4,7 @@
   import { ollamaCall } from "../infra/service/ollama";
 
   import { promptStore } from "../lib/store";
+  import Markdown from "../atoms/markdown.svelte";
   promptStore.set(promptController.getPrompts());
 
   $: prompts = $promptStore;
@@ -68,11 +69,7 @@
       {#if loading}
         <div>LOADING...</div>
       {/if}
-      {#if response}
-        <div class="bg-gray-800 p-4">
-          <div class="text-gray-300">{response}</div>
-        </div>
-      {/if}
+      <Markdown value={response} />
     </div>
   </div>
 
