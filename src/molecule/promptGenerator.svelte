@@ -1,18 +1,32 @@
 <script lang="ts">
   import { promptController } from "../infra/service/prompt";
   import clipboard from "../lib/clipBoard";
-  import { ollamaCall } from "../infra/service/ollama";
+  import {
+    ollamaCall,
+    getModels,
+    ollamaIsRunning,
+  } from "../infra/service/ollama";
 
   import { promptStore } from "../lib/store";
   import Markdown from "../atoms/markdown.svelte";
+  import { onMount } from "svelte";
   promptStore.set(promptController.getPrompts());
 
   $: prompts = $promptStore;
   let selectedIndex = 0;
+  let canCallOllama = false;
   let input = "";
   let response = "";
   let loading = false;
   let raw = false;
+  let model = "llama3";
+  let models: string[] = [];
+
+  onMount(async () => {
+    canCallOllama = await ollamaIsRunning();
+    models = await getModels();
+    model = models[0];
+  });
 
   $: currentPrompt = prompts[selectedIndex];
 
@@ -32,12 +46,17 @@
   function copy() {
     clipboard.copy(prompt);
   }
+
   async function Call() {
     response = "";
     loading = true;
-    await ollamaCall(prompt, (text: string) => {
-      response += text;
-    });
+    await ollamaCall(
+      prompt,
+      (text: string) => {
+        response += text;
+      },
+      model,
+    );
     loading = false;
   }
 </script>
@@ -59,11 +78,18 @@
     {/if}
 
     <div class="text-2xl font-bold mb-4">Prompt</div>
+    <select
+      class="block w-full p-2 mb-4 border border-gray-300 rounded-md bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+      bind:value={model}
+    >
+      {#each models as m}
+        <option value={m}>{m}</option>
+      {/each}
+    </select>
     <textarea
-      class="w-full p-2 mb-4 border bg-gray-700 text-white border-gray-700 rounded-md"
+      class="w-full p-2 mb-4 border border-gray-300 rounded-md bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
       bind:value={input}
     ></textarea>
-
     <div>
       <h2 class="text-2xl font-bold mb-2">Response</h2>
       {#if loading}

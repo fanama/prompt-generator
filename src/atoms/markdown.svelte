@@ -19,7 +19,7 @@
 
     // Code blocks
     html = html.replace(/```([\s\S]*?)```/gim, function (_, p1) {
-      return "<pre><code>" + p1.trim() + "</code></pre>";
+      return '<div class="bg-black p-2" ><code>' + p1.trim() + "</code></div>";
     });
 
     // Fix nested lists
@@ -34,7 +34,7 @@
 <div class="bg-gray-800 p-4">
   <div
     class="text-gray-300 max-h-52 overflow-scroll"
-    contenteditable="true"
+    contenteditable="false"
     bind:innerHTML={result}
   ></div>
 </div>

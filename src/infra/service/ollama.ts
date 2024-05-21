@@ -5,13 +5,29 @@ interface Response {
   done: boolean;
 }
 
+const baseURL = "http://localhost:11434";
+
+export async function getModels(): Promise<string[]> {
+  const response = await fetch(`${baseURL}/api/tags`);
+  const result = await response.json();
+
+  return result.models.map((model) => {
+    return model.name;
+  });
+}
+
+export async function ollamaIsRunning(): Promise<boolean> {
+  const state = await axios.get(baseURL);
+  return !!state;
+}
 export async function ollamaCall(
   prompt: string,
   stream: (text: string) => void = (text: string) => console.log({ text }),
+  model: string = "llama3",
 ) {
-  const url = "http://localhost:11434/api/generate";
+  const url = `${baseURL}/api/generate`;
   const data = {
-    model: "llama3",
+    model,
     prompt,
     options: {
       temperature: 0.1,

@@ -7,8 +7,13 @@ This template should help get you started developing with Svelte and TypeScript 
 https://ollama.ai/
 
 ```
+
 curl https://ollama.ai/install.sh | sh
+
 ollama pull mistral
+ollama pull gemma
+ollama pull llama3
+
 ```
 
 ## Recommended IDE Setup
