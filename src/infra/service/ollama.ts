@@ -5,15 +5,15 @@ interface Response {
   done: boolean;
 }
 
-const baseURL = "http://localhost:11434";
+const baseURL = "";
 
 export async function getModels(): Promise<string[]> {
   const response = await fetch(`${baseURL}/api/tags`);
   const result = await response.json();
 
-  return result.models.map((model) => {
-    return model.name;
-  });
+  console.log(result);
+
+  return result;
 }
 
 export async function ollamaIsRunning(): Promise<boolean> {
@@ -59,7 +59,7 @@ export async function ollamaCall(
   }
 
   async function readStream(
-    reader,
+    reader: ReadableStreamDefaultReader<Uint8Array>,
     stream: (text: string) => void = (text: string) => console.log({ text }),
   ) {
     const decoder = new TextDecoder();
@@ -70,9 +70,7 @@ export async function ollamaCall(
       done = streamDone;
       if (value) {
         const chunkStr = decoder.decode(value);
-        const chunk = JSON.parse(chunkStr);
-        result += chunk.response;
-        stream(chunk.response);
+        stream(chunkStr);
       }
     }
   }

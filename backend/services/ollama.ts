@@ -59,7 +59,7 @@ export async function ollamaCall(
   }
 
   async function readStream(
-    reader,
+    reader: ReadableStreamDefaultReader<Uint8Array>,
     stream: (text: string) => void = (text: string) => console.log({ text }),
   ) {
     const decoder = new TextDecoder();
