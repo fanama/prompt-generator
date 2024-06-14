@@ -129,6 +129,8 @@
     <div>
       <input type="checkbox" bind:checked={raw} />
       <label class="ml-2">Raw</label>
+      <input type="checkbox" />
+      <label class="ml-2">Stream</label>
     </div>
     <div class="flex space-x-4">
       <button

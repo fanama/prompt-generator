@@ -28,12 +28,19 @@
     return html.trim();
   }
 
-  $: result = parseMarkdown(value);
+  // $: result = parseMarkdown(value);
+
+  $: result = value
+    .split("\n")
+    .map((v) => {
+      return `<div>${v}</div>`;
+    })
+    .join("");
 </script>
 
-<div class="bg-gray-800 p-4">
+<div class="bg-gray-800 border rounded m-4 p-4">
   <div
-    class="text-gray-300 max-h-52 overflow-scroll"
+    class="text-gray-300"
     contenteditable="false"
     bind:innerHTML={result}
   ></div>
