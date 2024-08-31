@@ -1,7 +1,11 @@
 <script lang="ts">
+  import { promptController } from "./infra/service/prompt";
+  import { promptStore } from "./lib/store";
   import Chatbot from "./molecule/chatbot.svelte";
   import PromptGenerator from "./molecule/promptGenerator.svelte";
   import PromptManager from "./molecule/promptManager.svelte";
+
+  promptStore.set(promptController.getPrompts());
 
   let page = 0;
   function setPage(p: number) {

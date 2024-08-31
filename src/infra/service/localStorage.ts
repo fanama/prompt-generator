@@ -18,6 +18,10 @@ export class LocalStorage<T> {
     this.values = localValues;
   }
 
+  save(values: T[]) {
+    localStorage.setItem(this.key, JSON.stringify(values));
+  }
+
   getAll(): T[] {
     return this.values;
   }

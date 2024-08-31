@@ -11,6 +11,11 @@
   import { onMount } from "svelte";
   import type { Prompt } from "../domain/entity/prompt";
   import { promptStore } from "../lib/store";
+  import { LocalStorage } from "../infra/service/localStorage";
+
+  let historyStorageController = new LocalStorage<MessageList>("history", [
+    { id: 0, title: "default", messages: [] },
+  ]);
 
   let canCallOllama = false;
   let session: MessageList = { id: 0, title: "default", messages: [] };
@@ -19,7 +24,7 @@
   let loading = false;
   let model = "llama3";
   let models: string[] = [];
-  let history: MessageList[] = [{ id: 0, title: "default", messages: [] }];
+  let history: MessageList[] = [];
   $: useCases = $promptStore;
   let useCase: Prompt = {
     title: "None",
@@ -38,8 +43,10 @@
   }
 
   onMount(async () => {
+    history = historyStorageController.getAll();
     canCallOllama = await ollamaIsRunning();
     models = await getModels();
+    session = history[0];
     model = models[0];
   });
 
@@ -71,7 +78,9 @@
 
     loading = false;
     session = { ...session, messages: [...session.messages, response] };
-    SaveMessagesToHistory(session.title);
+    SaveMessagesToHistory(session.id);
+    historyStorageController.save(history);
+
     response = "";
     input = "";
   }
@@ -90,8 +99,8 @@
     session = { id, title: `${newTitle}-${history.length - 1}`, messages: [] };
   }
 
-  function SaveMessagesToHistory(newTitle: string) {
-    const existingIndex = history.findIndex((item) => item.title === newTitle);
+  function SaveMessagesToHistory(id: number) {
+    const existingIndex = history.findIndex((item) => item.id === id);
     if (existingIndex !== -1) {
       // Update the corresponding element
       history[existingIndex].messages = session.messages;
@@ -99,6 +108,12 @@
       // Add a new object to the end of the array
       NewConversation();
     }
+  }
+
+  function deleteConversation(id: number) {
+    const filteredHistory = history.filter((item) => item.id !== id);
+    history = filteredHistory;
+    historyStorageController.save(history);
   }
 
   $: updateTitleInHistory(session.id);
@@ -142,14 +157,23 @@
           NewConversation("New Conversation");
         }}>New Conversation</button
       >
-      {#each history as element}
-        <button
-          class="hover:bg-gray-400 p-1"
-          on:click={() => selectMessage(element)}
-        >
-          {element.title}
-        </button>
-      {/each}
+      <div class="h-40 overflow-scroll p-1 gap-1">
+        {#each history as element}
+          <div class="grid grid-cols-3 p-1 bg-gray-200 hover:bg-gray-300 p-1">
+            {element.title}
+            <button
+              class="p-1 bg-blue-400 hover:bg-blue-700 text-white"
+              on:click={() => selectMessage(element)}
+            >
+              select
+            </button>
+            <button
+              class="p-1 bg-red-400 text-white hover:bg-red-700"
+              on:click={() => deleteConversation(element.id)}>delete</button
+            >
+          </div>
+        {/each}
+      </div>
     </div>
     <div class="rounded-md h-96 w-full m-2 border p-2 overflow-scroll">
       <div>

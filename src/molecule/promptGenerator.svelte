@@ -1,5 +1,4 @@
 <script lang="ts">
-  import { promptController } from "../infra/service/prompt";
   import clipboard from "../lib/clipBoard";
   import {
     ollamaCall,
@@ -10,7 +9,6 @@
   import { promptStore } from "../lib/store";
   import Markdown from "../atoms/markdown.svelte";
   import { onMount } from "svelte";
-  promptStore.set(promptController.getPrompts());
 
   $: prompts = $promptStore;
   let selectedIndex = 0;
