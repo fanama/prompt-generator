@@ -61,16 +61,11 @@
   }
 </script>
 
-<div
-  class="bg-gray-900 grid grid-cols-2 w-full justify-center text-white p-8 gap-5 m-5"
->
+<div class="bg-gray-200 grid grid-cols-2 w-full justify-center p-8 gap-5 m-5">
   <div class="flex flex-col">
-    <h1 class="text-3xl font-bold mb-4 text-center">Prompt Generator</h1>
+    <h1 class="text-3xl font-bold mb-4 text-center">Test Custom GPT</h1>
     {#if !raw}
-      <select
-        class="w-full p-2 mb-4 bg-gray-800 text-white rounded-md"
-        bind:value={selectedIndex}
-      >
+      <select class="w-full p-2 mb-4 rounded-md" bind:value={selectedIndex}>
         {#each prompts as prompt, index}
           <option class="p-2" value={index}>{prompt.title}</option>
         {/each}
@@ -87,7 +82,7 @@
       {/each}
     </select>
     <textarea
-      class="w-full p-2 mb-4 border border-gray-300 rounded-md bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+      class="w-full p-2 mb-4 border border-gray-300 rounded-md bg-gray-300 text-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
       bind:value={input}
     ></textarea>
     <div>
@@ -101,26 +96,26 @@
 
   <div class="flex flex-col overflow-scroll">
     {#if !raw}
-      <div class="bg-gray-800 p-4 mb-4">
+      <div class="bg-gray-100 p-4 mb-4">
         <h2 class="text-2xl font-bold mb-2">Instruction</h2>
-        <div class="text-gray-300">{currentPrompt.instruction}</div>
+        <div class="text-gray-800">{currentPrompt.instruction}</div>
       </div>
 
-      <div class="bg-gray-800 p-4 mb-4">
+      <div class="bg-gray-100 p-4 mb-4">
         <h2 class="text-2xl font-bold mb-2">Objectif</h2>
-        <div class="text-gray-300">{currentPrompt.objectif}</div>
+        <div class="text-gray-800">{currentPrompt.objectif}</div>
       </div>
 
-      <div class="bg-gray-800 p-4 mb-4">
+      <div class="bg-gray-100 p-4 mb-4">
         <h2 class="text-2xl font-bold mb-2">Example</h2>
-        <div class="text-gray-300">{currentPrompt.example}</div>
+        <div class="text-gray-800">{currentPrompt.example}</div>
       </div>
     {/if}
 
     {#if input}
-      <div class="bg-gray-800 p-4">
+      <div class="bg-gray-100 p-4">
         <h2 class="text-2xl font-bold mb-2">Input</h2>
-        <div class="text-gray-300">{input}</div>
+        <div class="text-gray-800">{input}</div>
       </div>
     {/if}
   </div>
@@ -128,9 +123,9 @@
   <div class="col-span-2 flex justify-between items-center">
     <div>
       <input type="checkbox" bind:checked={raw} />
-      <label class="ml-2">Raw</label>
+      <div class="ml-2">Raw</div>
       <input type="checkbox" />
-      <label class="ml-2">Stream</label>
+      <div class="ml-2">Stream</div>
     </div>
     <div class="flex space-x-4">
       <button

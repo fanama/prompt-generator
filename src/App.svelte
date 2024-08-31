@@ -9,8 +9,8 @@
   }
 </script>
 
-<main class="bg-gray-800 text-white min-h-screen p-8">
-  <h1 class="text-4xl font-bold text-center mb-6">Promptor</h1>
+<main class="bg-gray-100 text-blue-800 min-h-screen p-8">
+  <h1 class="text-4xl font-bold text-center mb-6">AI Prompt - DEMO -</h1>
   <div class="flex gap-5 items-center justify-center">
     <button
       on:click={() => setPage(0)}
@@ -22,13 +22,13 @@
       on:click={() => setPage(1)}
       class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out"
     >
-      Generate Prompt
+      Test Custom GPT
     </button>
     <button
       on:click={() => setPage(2)}
       class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded transition duration-300 ease-in-out"
     >
-      Create Use Cases
+      Custom GPT
     </button>
   </div>
 

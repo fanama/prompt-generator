@@ -26,40 +26,42 @@
 </script>
 
 <div class="grid grid-cols-2 w-full h-screen gap-5 overflow-hidden">
-  <div class="bg-gray-900 text-white w-full p-8 h-fit m-5 shadow-lg rounded-lg">
-    <h1 class="text-3xl font-bold mb-6">Prompt Template Creator</h1>
+  <div
+    class="bg-gray-300 text-blue-800 w-full p-8 h-fit m-5 shadow-lg rounded-lg"
+  >
+    <h1 class="text-3xl font-bold mb-6">Create a Custom GPT</h1>
 
-    <div class="bg-gray-800 p-6 rounded-lg shadow-md mb-6">
+    <div class="bg-gray-200 p-6 rounded-lg shadow-md mb-6">
       <h2 class="text-2xl font-semibold mb-3">Title</h2>
       <textarea
-        class="w-full p-3 text-sm bg-gray-700 text-white border-none rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+        class="w-full p-3 text-sm bg-gray-300 text-blue-800 border-none rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
         bind:value={prompt.title}
         placeholder="Enter the prompt title..."
       />
     </div>
 
-    <div class="bg-gray-800 p-6 rounded-lg shadow-md mb-6">
+    <div class="bg-gray-200 p-6 rounded-lg shadow-md mb-6">
       <h2 class="text-2xl font-semibold mb-3">Objectif</h2>
       <textarea
-        class="w-full p-3 text-sm bg-gray-700 text-white border-none rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+        class="w-full p-3 text-sm bg-gray-300 text-blue-800 border-none rounded-lg border focus:ring-2 focus:ring-blue-500 focus:outline-none"
         bind:value={prompt.objectif}
         placeholder="Describe the objective..."
       />
     </div>
 
-    <div class="bg-gray-800 p-6 rounded-lg shadow-md mb-6">
+    <div class="bg-gray-200 p-6 rounded-lg shadow-md mb-6">
       <h2 class="text-2xl font-semibold mb-3">Example</h2>
       <textarea
-        class="w-full p-3 text-sm bg-gray-700 text-white border-none rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+        class="w-full p-3 text-sm bg-gray-300 text-blue-800 border-none rounded-lg border focus:ring-2 focus:ring-blue-500 focus:outline-none"
         bind:value={prompt.example}
         placeholder="Provide an example..."
       />
     </div>
 
-    <div class="bg-gray-800 p-6 rounded-lg shadow-md mb-6">
+    <div class="bg-gray-200 p-6 rounded-lg shadow-md mb-6">
       <h2 class="text-2xl font-semibold mb-3">Instruction</h2>
       <textarea
-        class="w-full p-3 text-sm bg-gray-700 text-white border-none rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+        class="w-full p-3 text-sm bg-gray-300 text-blue-800 border-none border rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
         bind:value={prompt.instruction}
         placeholder="Input the instructions..."
       />
@@ -73,7 +75,7 @@
     </button>
   </div>
   <div
-    class="bg-gray-800 text-white w-full p-8 shadow-lg rounded-lg h-5/6 overflow-y-auto overflow-scroll"
+    class="bg-gray-200 text-white w-full p-8 shadow-lg rounded-lg h-5/6 overflow-y-auto overflow-scroll"
   >
     <button
       class="w-full p-3 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg mb-3 transition-colors duration-300 ease-in-out focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
@@ -83,7 +85,7 @@
     </button>
     {#each prompts as p}
       <div
-        class="p-4 mb-4 flex justify-between bg-gray-700 rounded-lg shadow-md"
+        class="p-4 mb-4 flex justify-between bg-gray-400 rounded-lg shadow-md"
       >
         <div>{p.title}</div>
         <button

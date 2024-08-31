@@ -38,9 +38,9 @@
     .join("");
 </script>
 
-<div class="bg-gray-800 border rounded m-4 p-4">
+<div class="bg-gray-400 border rounded m-4 p-4">
   <div
-    class="text-gray-300"
+    class="text-blue-800"
     contenteditable="false"
     bind:innerHTML={result}
   ></div>
