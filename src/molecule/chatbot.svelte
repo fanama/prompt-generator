@@ -30,7 +30,6 @@
     title: "None",
     objectif: "",
     instruction: "",
-    example: "",
   };
 
   //if tittle change update the history title corresponding
@@ -54,9 +53,7 @@
     useCase.title !== "None"
       ? `## Objectif \n
      ${useCase.objectif} \n\n
-     ## Example \n
-     ${useCase.example} \n\n
-     ## Input \n
+      ## Input \n
      ${input}\n\n
      ## Instruction \n
      ${useCase.instruction} 
@@ -190,6 +187,11 @@
   <textarea
     class="w-full p-2 mb-4 border border-gray-300 rounded-md bg-gray-200 text-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
     bind:value={input}
+    on:keydown={(e) => {
+      if (e.key === "Enter") {
+        Call();
+      }
+    }}
   ></textarea>
 
   <button
