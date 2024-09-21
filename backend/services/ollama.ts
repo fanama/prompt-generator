@@ -20,6 +20,7 @@ export async function ollamaIsRunning(): Promise<boolean> {
   const state = await axios.get(baseURL);
   return !!state;
 }
+
 export async function ollamaCall(
   prompt: string,
   stream: (text: string) => void = (text: string) => console.log({ text }),
@@ -75,6 +76,26 @@ export async function ollamaCall(
         stream(chunk.response);
       }
     }
+  }
+}
+
+export async function ollamaCallJSON(
+  prompt: string,
+  model: string,
+): Promise<any> {
+  const url = "http://localhost:11434/api/generate";
+
+  try {
+    const response = await axios.post(url, {
+      model,
+      prompt,
+      format: "json",
+      stream: false,
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error making the request:", error);
+    throw error;
   }
 }
 

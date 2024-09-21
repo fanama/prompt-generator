@@ -1,6 +1,7 @@
 import {
   getModels,
   ollamaCall,
+  ollamaCallJSON,
   ollamaIsRunning,
 } from "../../services/ollama.ts";
 import { Request, Response } from "express";
@@ -33,5 +34,13 @@ export class AiHttp {
     );
 
     res.end();
+  }
+
+  async callJSON(req: Request, res: Response) {
+    const { prompt, model } = req.body;
+
+    const response = await ollamaCallJSON(prompt, model);
+
+    res.send(response);
   }
 }
