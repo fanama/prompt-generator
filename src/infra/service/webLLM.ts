@@ -1,26 +1,45 @@
-import axios from "axios";
+import { CreateMLCEngine } from "@mlc-ai/web-llm";
+import { CreateMLCEngine, MLCEngine } from "@mlc-ai/web-llm";
+
+ // Initialize with a progress callback
+ const initProgressCallback = (progress) => {
+     console.log("Model loading progress:", progress);
+ };
+
+ 
+// Using CreateMLCEngine
+const engine = await CreateMLCEngine("Llama-3.2-1B-Instruct-q4f32_1-MLC", { initProgressCallback });
+
+const messages = [
+    { role: "system", content: "You are a helpful AI assistant." },
+    { role: "user", content: "Hello!" }
+];
+
+const reply = await engine.chat.completions.create({
+    messages,
+});
+
+console.log(reply.choices[0].message);
+console.log(reply.usage);
 
 interface Response {
   response: string;
   done: boolean;
 }
 
-const baseURL = "http://localhost:11434";
-
 export async function getModels(): Promise<string[]> {
   const response = await fetch(`${baseURL}/api/tags`);
   const result = await response.json();
 
-  return result.models.map((model) => {
-    return model.name;
-  });
+  console.log(result);
+
+  return result;
 }
 
 export async function ollamaIsRunning(): Promise<boolean> {
   const state = await axios.get(baseURL);
   return !!state;
 }
-
 export async function ollamaCall(
   prompt: string,
   stream: (text: string) => void = (text: string) => console.log({ text }),
@@ -47,8 +66,7 @@ export async function ollamaCall(
     });
 
     if (!response.ok || !response.body) {
-      console.log(response)
-      throw new Error(`Network response was not ok : ${url} ${JSON.stringify(data,null,2)}`);
+      throw new Error("Network response was not ok");
     }
 
     const reader = response.body.getReader();
@@ -72,31 +90,9 @@ export async function ollamaCall(
       done = streamDone;
       if (value) {
         const chunkStr = decoder.decode(value);
-        const chunk = JSON.parse(chunkStr);
-        result += chunk.response;
-        stream(chunk.response);
+        stream(chunkStr);
       }
     }
-  }
-}
-
-export async function ollamaCallJSON(
-  prompt: string,
-  model: string,
-): Promise<any> {
-  const url = "http://localhost:11434/api/generate";
-
-  try {
-    const response = await axios.post(url, {
-      model,
-      prompt,
-      format: "json",
-      stream: false,
-    });
-    return response.data;
-  } catch (error) {
-    console.error("Error making the request:", error);
-    throw error;
   }
 }
 

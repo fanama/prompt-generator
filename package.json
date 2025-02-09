@@ -23,6 +23,7 @@
     "vite": "^4.4.5"
   },
   "dependencies": {
+    "@mlc-ai/web-llm": "^0.2.78",
     "@types/cors": "^2.8.17",
     "@types/express": "^4.17.21",
     "axios": "^1.6.2",
