@@ -12,6 +12,8 @@
   import type { Prompt } from "../domain/entity/prompt";
   import { promptStore } from "../lib/store";
   import { LocalStorage } from "../infra/service/localStorage";
+  import VoiceOutput from "../atoms/voiceOutput.svelte";
+  import VoiceInput from "../atoms/voiceInput.svelte";
 
   let historyStorageController = new LocalStorage<MessageList>("history", [
     { id: 0, title: "default", messages: [] },
@@ -20,6 +22,7 @@
   let canCallOllama = false;
   let session: MessageList = { id: 0, title: "default", messages: [] };
   let input = "";
+  let inputElement: HTMLTextAreaElement;
   let response = "";
   let loading = false;
   let model = "llama3";
@@ -56,7 +59,7 @@
       ## Input \n
      ${input}\n\n
      ## Instruction \n
-     ${useCase.instruction} 
+     ${useCase.instruction}
 
      `
       : ` ${session.messages.slice(-5).join("\n")} \n  ${input}`;
@@ -114,6 +117,10 @@
   }
 
   $: updateTitleInHistory(session.id);
+
+  function handleTranscriptChanged(event: CustomEvent) {
+    input = event.detail.transcript;
+  }
 </script>
 
 <div class="flex flex-col w-full">
@@ -176,28 +183,60 @@
       <div>
         <input type="text" bind:value={session.title} />
       </div>
-      {#each session.messages as message}
-        <Markdown value={message} />
-      {/each}
-      {#if response}
-        <Markdown value={response} />
-      {/if}
+
+      <div class="flex flex-col space-y-2">
+        {#each session.messages as message}
+          <div
+            class="flex flex-col {message.startsWith('you :')
+              ? 'items-end'
+              : 'items-start'}"
+          >
+            <div
+              class="p-4 rounded-lg max-w-3xl {message.startsWith('you :')
+                ? 'bg-blue-100'
+                : 'bg-gray-100'}"
+            >
+              <Markdown value={message} />
+              <div class="mt-2">
+                <VoiceOutput textValue={message} />
+              </div>
+            </div>
+          </div>
+        {/each}
+        {#if response}
+          <div class="flex flex-col items-start">
+            <div class="p-4 rounded-lg max-w-3xl bg-gray-100">
+              <Markdown value={response} />
+              <div class="mt-2">
+                <VoiceOutput textValue={response} />
+              </div>
+            </div>
+          </div>
+        {/if}
+      </div>
     </div>
   </div>
-  <textarea
-    class="w-full p-2 mb-4 border border-gray-300 rounded-md bg-gray-200 text-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-    bind:value={input}
-    on:keydown={(e) => {
-      if (e.key === "Enter") {
-        Call();
-      }
-    }}
-  ></textarea>
 
-  <button
-    class="px-6 py-2 text-white font-bold bg-blue-600 rounded-full hover:bg-blue-700 focus:outline-none focus:bg-blue-500 focus:ring-2 focus:ring-blue-300 active:bg-blue-800 transition duration-150 ease-in-out"
-    on:click={Call}
-  >
-    Send
-  </button>
+  <div class="flex flex-col space-y-4">
+    <div class="flex flex-row items-center space-x-4">
+      <textarea
+        class="flex-grow p-4 border border-gray-300 rounded-md bg-gray-100 text-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+        bind:this={inputElement}
+        bind:value={input}
+        on:keydown={(e) => {
+          if (e.key === "Enter") {
+            Call();
+          }
+        }}
+        placeholder="Type your message here..."
+      ></textarea>
+      <VoiceInput on:transcriptChanged={handleTranscriptChanged} />
+      <button
+        class="px-6 py-2 text-white font-bold bg-blue-600 rounded-full hover:bg-blue-700 focus:outline-none focus:bg-blue-500 focus:ring-2 focus:ring-blue-300 active:bg-blue-800 transition duration-150 ease-in-out"
+        on:click={Call}
+      >
+        Send
+      </button>
+    </div>
+  </div>
 </div>
